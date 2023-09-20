@@ -1,0 +1,29 @@
+{
+  "name": "taskmanagement",
+  "version": "1.0.0",
+  "description": "Taskmanagent api in typescript",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "dev": "node dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git remote add origin https://github.com/McDonaldMusimwa/Taskmanagement.git"
+  },
+  "author": "McDonald",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "swagger-autogen": "^2.23.6",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.2",
+    "swagger-ui-express": "^5.0.0"
+  }
+}
