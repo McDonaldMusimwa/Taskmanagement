@@ -1,0 +1,1 @@
+{"version":3,"file":"authCheck.js","sourceRoot":"","sources":["../../src/services/authCheck.ts"],"names":[],"mappings":";;AAIA,SAAwB,mBAAmB,CAAC,GAAY,EAAE,GAAa,EAAE,IAAkB;IACvF,IAAI,GAAG,CAAC,IAAI,EAAE;QACV,OAAO,IAAI,EAAE,CAAA;KAEhB;IACD,GAAG,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,QAAQ,CAAC,QAAQ,CAAC,CAAA;AAEtC,CAAC;AAPD,sCAOC"}

@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TaskSchema = void 0;
 const mongooose = require("mongoose");
 const Scheema = mongooose.Schema;
 const taskSchema = new Scheema({
@@ -7,15 +10,8 @@ const taskSchema = new Scheema({
     dateToDo: String,
     starttime: String,
     endtime: String,
-    collaboration: {
-        require: false,
-        type: String,
-    },
-    status: {
-        type: String,
-        enum: ["done", "not done", "in progress"],
-    },
+    status: Number,
 });
-const Task = mongooose.model("Task", taskSchema, "tasks");
-module.exports = { Task };
+const TaskSchema = mongooose.model('Task', taskSchema, 'tasks');
+exports.TaskSchema = TaskSchema;
 //# sourceMappingURL=task.js.map
