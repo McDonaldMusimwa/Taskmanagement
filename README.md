@@ -1,3 +1,22 @@
+# Overview
+
+This first sprint i am aiming to get comfortable with OOP and its implementation in Typescript.I am also learning the use of static language .
+
+[Software Demo Video](https://youtu.be/JcbeNV4B3Mo)
+
+# Development Environment
+
+For this project i went with Typescript ,since i am comfortable with javascript ,learnirng typescript added static nature of programming.
+ 
+- Static naming of variables
+- Object oriented programming 
+
+# Useful Websites
+
+* [typescript](https://www.typescriptlang.org/)
+* [expres js](https://expressjs.com/)
+
+
 
 # Node Js Application Programming Interface for task managament application (Taskator)
 
@@ -13,36 +32,36 @@ Operations RESTApi for day to day tasks.
 
 
 ## Technologies Used  
-"dependencies": {  
-    "@types/jest": "^29.5.2",  
-    "body-parser": "^1.18.3",  
-    "dotenv": "^16.0.3",  
-    "express": "^4.18.2",  
-    "express-openid-connect": "^2.16.0",  
-    "express-session": "^1.17.3",  
-    "jsonwebtoken": "^9.0.0",  
-    "mongodb": "^4.4.0",  
-    "nodemon": "^2.0.22",  
-    "passport": "^0.6.0",  
-    "passport-google-oauth2": "^0.2.0",  
-    "supertest": "^6.3.3",  
-    "swagger-ui-express": "^4.3.0",
-    "validator":"^13.9.0",
-    "passport": "^0.6.0",  
-    "passport-google-oauth2": "^0.2.0",    
-  },  
-  "devDependencies": {  
-    "eslint": "^8.10.0",  
-    "eslint-config-prettier": "^8.5.0",  
-    "eslint-plugin-prettier": "^4.0.0",  
-    "jest": "^29.5.0",  
-    "nodemon": "^2.0.22",  
-    "prettier": "^2.5.1",  
-    "supertest": "^6.3.3",  
-    "swagger-autogen": "^2.19.0",  
-    "cors": "^2.8.5", 
-    "typescript": "^5.2.2"   
-  }    
+    "dependencies": {  
+        "@types/jest": "^29.5.2",  
+        "body-parser": "^1.18.3",  
+        "dotenv": "^16.0.3",  
+        "express": "^4.18.2",  
+        "express-openid-connect": "^2.16.0",  
+        "express-session": "^1.17.3",  
+        "jsonwebtoken": "^9.0.0",  
+        "mongodb": "^4.4.0",  
+        "nodemon": "^2.0.22",  
+        "passport": "^0.6.0",  
+        "passport-google-oauth2": "^0.2.0",  
+        "supertest": "^6.3.3",  
+        "swagger-ui-express": "^4.3.0",
+        "validator":"^13.9.0",
+        "passport": "^0.6.0",  
+        "passport-google-oauth2": "^0.2.0",    
+      },  
+      "devDependencies": {  
+        "eslint": "^8.10.0",  
+        "eslint-config-prettier": "^8.5.0",  
+        "eslint-plugin-prettier": "^4.0.0",  
+        "jest": "^29.5.0",  
+        "nodemon": "^2.0.22",  
+        "prettier": "^2.5.1",  
+        "supertest": "^6.3.3",  
+        "swagger-autogen": "^2.19.0",  
+        "cors": "^2.8.5", 
+        "typescript": "^5.2.2"   
+      }    
 
     
 
