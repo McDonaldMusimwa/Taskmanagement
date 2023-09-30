@@ -1,0 +1,91 @@
+import { Request, Response, NextFunction } from 'express';
+import { User, OAuthUser } from '../models/user'; // Correctly import the 'NewUser' model
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import {passport,DoneFunction} from 'passport';
+const JWTTOKEN = process.env.JWTTOKEN;
+import dotenv from 'dotenv';
+dotenv.config();
+
+
+
+export default class UserController {
+    public async createUser(req: Request, res: Response): Promise<void> {
+        //#swagger.tags=['User']
+        try {
+            // Extract user information from the request body
+            const hashedPassword = await bcrypt.hash(req.body.password, 10)
+            const newUser = {
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                password: hashedPassword
+            };
+
+
+            // Validate the input (you can use a library like Joi for this)
+            if (!newUser.lastname || !newUser.firstname || !newUser.password || !newUser.email) {
+                res.status(400).json({ error: 'Missing required fields' });
+                return;
+            }
+
+
+            const Userresult = new User(newUser); // Create a new user with the 'NewUser' model
+            const createdUser = await Userresult.save(); // Save the user to the database
+            res.status(200).json({ success: "created successfully" });
+            return { ...createdUser._doc, _id: createdUser.toString() };
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    public async getUsers(req: Request, res: Response): Promise<void> {
+        try {
+            const response = await User.find()
+            //console.log(response)
+            res.status(200).json(response)
+        } catch (error) {
+            res.status(500).json({ error: 'Internal Server Error' })
+        }
+    }
+
+    public async login(req: Request, res: Response): Promise<void> {
+        const { email, password } = req.body;
+    
+        try {
+            const retrievedUser = await User.findOne({ email: email });
+            console.log(retrievedUser);
+    
+            if (!retrievedUser) {
+                res.status(404).json({ error: 'User not found' });
+                return;
+            }
+    
+            const retrievedPassword: string = retrievedUser.password;
+            const isValidPassword = await bcrypt.compare(password, retrievedPassword);
+    
+            if (!isValidPassword) {
+                res.status(401).json({ error: 'Incorrect Password' });
+                return;
+            }
+    
+            const token = jwt.sign(
+                {
+                    userId: retrievedUser._id.toString(),
+                    email: retrievedUser.email,
+                },
+                JWTTOKEN!,
+                { expiresIn: '1h' }
+            );
+    
+            // Do not call done() manually here
+            retrievedUser.token = token;
+            res.status(200).json(retrievedUser);
+        } catch (error) {
+            res.status(500).json({ error });
+        }
+    }
+
+}

@@ -1,26 +1,32 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
+const { Schema, model } = mongoose;
+
+// Define the user schema
 const userSchema = new Schema({
   email: {
     type: String,
-    required: true,
+    required: [true,'Please enter valid email'],
+    lowercase:true,
+    unique:true
   },
   password: {
     type: String,
-    required: true,
+    required: [true,'Please enter password'],
+    minLength:[6,'Minimum length is 6 characters']
   },
-  firstName: {
+  firstname: {
     type: String,
     required: true,
   },
-  lastName: {
+  lastname: {
     type: String,
-    require: true,
+    required: false, // It's better to use `required` instead of `require`
   },
 });
 
-const OauthUserSchema = new Schema({
+// Define the OAuth user schema
+const oauthUserSchema = new Schema({
   firstname: {
     type: String,
     required: true,
@@ -43,11 +49,8 @@ const OauthUserSchema = new Schema({
   },
 });
 
-//const OauthUserSchema = new Schema({});
-const User = mongoose.model("User", userSchema, "users");
+// Create models based on the schemas
+const User = model('User', userSchema, 'users');
+const OAuthUser = model('OAuthUser', oauthUserSchema, 'users');
 
-const OAuthUser = mongoose.model("OAuthUser", OauthUserSchema, "users");
-module.exports = {
-  User,
-  OAuthUser,
-};
+export {User,OAuthUser};

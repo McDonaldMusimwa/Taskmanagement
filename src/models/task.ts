@@ -9,16 +9,10 @@ const taskSchema = new Scheema({
   dateToDo: String,
   starttime: String,
   endtime: String,
-  collaboration: {
-    require: false,
-    type: String,
-  },
-  status: {
-    type: String,
-    enum: ["done", "not done", "in progress"],
-  },
+
+  status: Number,
 });
 
-const Task = mongooose.model("Task", taskSchema, "tasks");
+const TaskSchema = mongooose.model('Task', taskSchema, 'tasks');
 
-module.exports = { Task };
+export {TaskSchema}
