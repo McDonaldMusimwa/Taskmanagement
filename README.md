@@ -54,7 +54,7 @@ type npm start
 
 
 ## Project Status
--deployed @   https://taskatar.onrender.com    
--api documentation and testing  @ https://taskatar.onrender.com/api-docs     
+-deployed @   https://taskater.onrender.com    
+-api documentation and testing  @ https://taskater.onrender.com/api-docs     
 ### Project is: In development  
 

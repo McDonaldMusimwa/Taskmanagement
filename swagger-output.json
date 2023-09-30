@@ -5,7 +5,7 @@
     "title": "taskatorApi",
     "description": "Taskater is a task management designed to ease the management of daily tasks and duties."
   },
-  "host": "tasketor.onrender.com/",
+  "host": "tasketer.onrender.com/",
   "basePath": "",
   "tags": [
     {
