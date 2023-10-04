@@ -2,7 +2,7 @@ import {Router} from  'express';
 import controller from '../controller/user';
 import passport from  'passport';
 import {Request,Response} from 'express';
-import passportService from '../services/passport';
+import checkAuth from '../services/authCheck';
 
 const router =Router();
 const UserController = new controller()
@@ -10,28 +10,30 @@ const UserController = new controller()
 //router.post("/", UserController.getOneUser);
 
 //google oAUTH2.0
-router.get('/google',passport.authenticate('google', {
+router.get('/auth/google',passport.authenticate('google', {
     //what we want from the user
-    scope: ["email", "profile"],
+    scope: ['email', 'profile'],
   })
 );
 
 router.get(
   "/auth/google/redirect",
   passport.authenticate("google", {
-    successRedirect: "/tasks",
-    failureRedirect: "/login",
+    successRedirect: "/login/auth/protected",
+    failureRedirect: "/login/auth/failed",
   })
   
 );
 
-
-router.get("/protected", (req:Request, res:Response) => {
+router.get("/auth/protected", checkAuth,(req:Request, res:Response) => {
   res.send("logged in ");
 });
 
-router.get("/failed", (req:Request, res:Response) => {
+router.get("/auth/failed", (req:Request, res:Response) => {
   res.send("failed ");
 });
 
+
+
 module.exports = router;
+

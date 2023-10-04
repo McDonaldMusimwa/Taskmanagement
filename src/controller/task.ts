@@ -32,9 +32,10 @@ export default class taskController {
     }
     public async getAllTasks(req: Request, res: Response): Promise<void> {
         //#swagger.tags=['Task']
+
         let userId = req.user?.id;
-        console.log(userId)
-        console.log(req.user)
+        
+        console.log(req)
         //console.log(req)
         try {
 

@@ -6,7 +6,8 @@ import passport from 'passport';
 import session from 'express-session';
 import { ConnectOptions } from 'mongoose';
 import swaggerUi from 'swagger-ui-express';
-const swaggerDocument= require('../swagger-output.json');
+import cors from 'cors';
+const swaggerDocument = require('../swagger-output.json');
 
 // Import your Passport configuration
 import './services/passport'; // Replace with the actual path
@@ -18,7 +19,7 @@ const SECRET = process.env.SECRET;
 
 const app = express();
 
-// Configure session
+// Configure and start session
 app.use(session({
   secret: SECRET, // Replace with a strong and secure secret
   resave: false,
@@ -34,7 +35,19 @@ app.use(passport.session());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
+app.use(cors())
+app
+  .use(bodyParser.json())
+  .use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Origin,X-Requested-With,Content-TypeError,Accept,Z-Key'
+    );
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Methods', 'GET ,POST,PUT,DELETE,OPTIONS');
+    next();
+  })
 // Define your routes after configuring Passport
 app.use("/", require("./routes/index"));
 
