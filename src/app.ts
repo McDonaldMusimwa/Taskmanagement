@@ -21,15 +21,15 @@ const app = express();
 
 // Configure and start session
 app.use(session({
-  secret: SECRET, // Replace with a strong and secure secret
+  secret: SECRET,
   resave: false,
   saveUninitialized: true,
-  // Additional session options go here, like store, cookie settings, etc.
+  cookie: { secure: false }
 }));
 
-// Initialize Passport and configure it to use sessions
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 // Configure body parser, JSON parsing, and Swagger
 app.use(bodyParser.json());
@@ -48,6 +48,15 @@ app
     res.setHeader('Access-Control-Allow-Methods', 'GET ,POST,PUT,DELETE,OPTIONS');
     next();
   })
+
+  /*
+  app.use(cors({
+    origin:"http://localhost:3000",
+    methods:"GET,POST,PUT,PATCH,DELETE",
+    credentials:true
+  }))
+
+  */
 // Define your routes after configuring Passport
 app.use("/", require("./routes/index"));
 

@@ -38,21 +38,26 @@ class taskController {
         });
     }
     getAllTasks(req, res) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             //#swagger.tags=['Task']
-            let userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
-            console.log(userId);
-            console.log(req.user);
-            //console.log(req)
             try {
+                // Ensure req.user and req.user._id are defined
+                if (!req.params || !req.user._id) {
+                    res.status(401).json({ message: 'User not authenticated' });
+                    return;
+                }
+                const userId = req.params;
+                console.log(userId);
                 const tasks = yield task_1.TaskSchema.find({ owner: userId });
-                if (!tasks) {
+                if (!tasks || tasks.length === 0) {
                     res.status(404).json({ message: 'No tasks found' });
                 }
-                res.status(200).json(tasks);
+                else {
+                    res.status(200).json(tasks);
+                }
             }
-            catch (message) {
+            catch (error) {
+                console.error(error);
                 res.status(500).json({ message: 'Internal Server Error' });
             }
         });

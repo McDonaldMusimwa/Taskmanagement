@@ -12,12 +12,11 @@ const CLIENTSECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 const JWTTOKEN = process.env.JWTTOKEN;
 
-passport.serializeUser((user: any, done: DoneFunction) => {
-  console.log("User has been serialised")
-  done(null, user.id);
+passport.serializeUser((user: any, done) => {
+  done(null, user.userId);
 });
 
-passport.deserializeUser(async (id: string, done: DoneFunction) => {
+passport.deserializeUser(async (id, done) => {
   try {
     const user = await OAuthUser.findById(id);
     done(null, user);
@@ -33,7 +32,7 @@ passport.use(
       
       clientID: CLIENTID,
       clientSecret: CLIENTSECRET,
-      callbackURL: 'http://localhost:8080/login/auth/google/redirect'
+      callbackURL: 'http://localhost:8080/auth/google/redirect'
     },
     async (accessToken, refreshToken, profile, done) => {
       
@@ -52,8 +51,9 @@ passport.use(
 
           currentUser.token = token;
           await currentUser.save();
-          done(null, currentUser);
-          console.log(currentUser.token)
+          
+          return done(null, { userId: currentUser._id.toString(), token, user: currentUser.toJSON() });
+          
         } else {
           // If not, create a new user
           const newUser = await new OAuthUser({
@@ -75,8 +75,8 @@ passport.use(
 
           newUser.token = token;
           await newUser.save();
-          done(null, newUser);
-          console.log(newUser)
+          return done(null, { userId: newUser._id.toString(), token, user: newUser.toJSON() });
+          
         }
       } catch (error) {
         done(error);

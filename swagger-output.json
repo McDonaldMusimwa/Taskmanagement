@@ -16,7 +16,16 @@
   "schemes": [
     "http"
   ],
-  "securityDefinitions": {},
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "authorizationUrl": "https://localhost/login/auth/google",
+      "flow": "implicit",
+      "scopes": {
+        "openid": "Access to user information"
+      }
+    }
+  },
   "paths": {
     "/": {
       "get": {
@@ -207,7 +216,7 @@
         }
       }
     },
-    "/login/auth/google": {
+    "/auth/google": {
       "get": {
         "description": "",
         "responses": {
@@ -217,7 +226,7 @@
         }
       }
     },
-    "/login/auth/google/redirect": {
+    "/auth/google/redirect": {
       "get": {
         "description": "",
         "responses": {
@@ -227,22 +236,35 @@
         }
       }
     },
-    "/login/auth/protected": {
+    "/auth/protected": {
       "get": {
         "description": "",
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
     },
-    "/login/auth/failed": {
+    "/auth/failed": {
       "get": {
         "description": "",
         "responses": {
-          "200": {
-            "description": "OK"
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }

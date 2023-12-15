@@ -3,11 +3,11 @@ import { Request, Response, NextFunction } from 'express';
 
 
 export default function AuthenticationCheck(req: Request, res: Response, next: NextFunction) {
+   
     if (req.user) {
-        return next()
-
-    }
-    res.status(401).json({message:"User not Aunthenticated",status:401,Authenticated:false})//.redirect('/login')
+        return next();
+      }
+      res.status(401).json({ message: 'User not authenticated' });
 
 }
 

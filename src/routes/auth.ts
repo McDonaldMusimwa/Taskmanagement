@@ -1,39 +1,50 @@
-import {Router} from  'express';
-import controller from '../controller/user';
-import passport from  'passport';
-import {Request,Response} from 'express';
-import checkAuth from '../services/authCheck';
+import { Router } from 'express';
 
-const router =Router();
-const UserController = new controller()
+import passport from 'passport';
+import { Request, Response,NextFunction } from 'express';
+import checkAuth from '../services/authCheck';
+import'../services/passport';
+
+const CLIENTURL = process.env.CLIENT_URL;
+
+const router = Router();
+//const UserController = new controller()
 
 //router.post("/", UserController.getOneUser);
 
 //google oAUTH2.0
-router.get('/auth/google',passport.authenticate('google', {
-    //what we want from the user
+
+router.get('/google', (req: Request, res: Response, next: NextFunction) => {
+  passport.authenticate('google', {
     scope: ['email', 'profile'],
-  })
-);
+  })(req, res, next);
+});
 
 router.get(
-  "/auth/google/redirect",
-  passport.authenticate("google", {
-    successRedirect: "/login/auth/protected",
-    failureRedirect: "/login/auth/failed",
+  '/google/redirect',
+  passport.authenticate('google', {
+    successRedirect: '/auth/protected',
+    failureRedirect: '/auth/failed',
   })
-  
 );
 
-router.get("/auth/protected", checkAuth,(req:Request, res:Response) => {
-  res.send("logged in ");
+
+router.get('/protected', checkAuth, (req: Request, res: Response) => {
+  console.log('Handling /protected route');
+  const user = req.user;
+  console.log(user);
+  user ? res.redirect(`/tasks/${req.user._id}`) : res.status(403).json({ message: "Not Authorized" });
 });
 
-router.get("/auth/failed", (req:Request, res:Response) => {
-  res.send("failed ");
+router.get("/failed", (req: Request, res: Response) => {
+  res.status(401).json({ message: "failed " });
 });
 
+router.get("/logout",checkAuth,(req,res)=>{
+  req.logout();
+  res.redirect(CLIENTURL)
+})
 
 
-module.exports = router;
+export default  router;
 

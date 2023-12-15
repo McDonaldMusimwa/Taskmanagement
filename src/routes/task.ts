@@ -6,7 +6,7 @@ const controller = new taskController();
 
 const router = Router();
 
-router.get('/',AuthenticationCheck, (req: Request, res: Response) => {
+router.get('/:_id',AuthenticationCheck, (req: Request, res: Response) => {
     controller.getAllTasks(req, res)
 }
 );
@@ -15,4 +15,4 @@ router.post('/addtask/:userId',AuthenticationCheck, (req: Request, res: Response
 router.patch('/:taskid',AuthenticationCheck, (req: Request, res: Response) => controller.modifyTask(req, res));
 router.delete('/:taskid',AuthenticationCheck, (req: Request, res: Response) => controller.deleteOneTask(req, res));
 
-module.exports = router;
+export default router;

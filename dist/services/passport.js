@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const passport_google_oauth2_1 = require("passport-google-oauth2");
-const jsonwebtoken_1 = require("jsonwebtoken");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const user_1 = require("../models/user");
 dotenv_1.default.config();
@@ -22,7 +22,7 @@ const CLIENTID = process.env.GOOGLE_CLIENT_ID;
 const CLIENTSECRET = process.env.GOOGLE_CLIENT_SECRET;
 const JWTTOKEN = process.env.JWTTOKEN;
 passport_1.default.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user.userId);
 });
 passport_1.default.deserializeUser((id, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -35,9 +35,9 @@ passport_1.default.deserializeUser((id, done) => __awaiter(void 0, void 0, void 
 }));
 passport_1.default.use(new passport_google_oauth2_1.Strategy({
     // OPTIONS FOR GOOGLE STRATEGY
-    callbackURL: '/auth/google/redirect',
     clientID: CLIENTID,
     clientSecret: CLIENTSECRET,
+    callbackURL: 'http://localhost:8080/auth/google/redirect'
 }, (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
     //#swagger.tags=['User']
     try {
@@ -45,10 +45,10 @@ passport_1.default.use(new passport_google_oauth2_1.Strategy({
         const currentUser = yield user_1.OAuthUser.findOne({ googleId: profile.id });
         if (currentUser) {
             // Already in the database
-            const token = jsonwebtoken_1.jwt.sign({ userId: currentUser._id.toString(), email: currentUser.email }, JWTTOKEN, { expiresIn: '1h' });
+            const token = jsonwebtoken_1.default.sign({ userId: currentUser._id.toString(), email: currentUser.email }, JWTTOKEN, { expiresIn: '1h' });
             currentUser.token = token;
             yield currentUser.save();
-            done(null, currentUser);
+            return done(null, { userId: currentUser._id.toString(), token, user: currentUser.toJSON() });
         }
         else {
             // If not, create a new user
@@ -60,10 +60,10 @@ passport_1.default.use(new passport_google_oauth2_1.Strategy({
                 googleId: profile.id,
             }).save();
             // Generate a token and attach it to the user object
-            const token = jsonwebtoken_1.jwt.sign({ userId: newUser._id.toString(), email: newUser.email }, JWTTOKEN, { expiresIn: '1h' });
+            const token = jsonwebtoken_1.default.sign({ userId: newUser._id.toString(), email: newUser.email }, JWTTOKEN, { expiresIn: '1h' });
             newUser.token = token;
             yield newUser.save();
-            done(null, newUser);
+            return done(null, { userId: newUser._id.toString(), token, user: newUser.toJSON() });
         }
     }
     catch (error) {

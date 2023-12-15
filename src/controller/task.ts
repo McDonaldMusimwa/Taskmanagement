@@ -19,33 +19,38 @@ export default class taskController {
                 status: req.body.status
 
             }
-            
+
             const newTask = new TaskSchema(taskItem)
-            
+
             //console.log(newTask)
-            const response =await newTask.save()
+            const response = await newTask.save()
             //console.log(response)
             res.status(200).json(response);
-        } catch(message) {
+        } catch (message) {
             res.status(500).json({ messsage: 'Internal Server Error' });
         }
     }
     public async getAllTasks(req: Request, res: Response): Promise<void> {
         //#swagger.tags=['Task']
 
-        let userId = req.user?.id;
-        
-        console.log(req)
-        //console.log(req)
         try {
-
-            const tasks = await TaskSchema.find({ owner: userId });
-            if (!tasks) {
-                res.status(404).json({ message: 'No tasks found' })
+            // Ensure req.user and req.user._id are defined
+            if (!req.params || !req.user._id) {
+                res.status(401).json({ message: 'User not authenticated' });
+                return;
             }
-            res.status(200).json(tasks);
 
-        } catch(message) {
+            const userId = req.params.id;
+            console.log(userId)
+            const tasks = await TaskSchema.find({ owner: userId });
+
+            if (!tasks || tasks.length === 0) {
+                res.status(404).json({ message: 'No tasks found' });
+            } else {
+                res.status(200).json(tasks);
+            }
+        } catch (error) {
+            console.error(error);
             res.status(500).json({ message: 'Internal Server Error' });
         }
     }
@@ -74,7 +79,7 @@ export default class taskController {
     public async deleteOneTask(req: Request, res: Response): Promise<void> {
         //#swagger.tags=['Task']
         const taskId = req.params.taskid;
-      
+
         try {
             // Use the Task model to delete the task by its _id
             const result = await TaskSchema.deleteOne({ _id: taskId });
@@ -96,15 +101,15 @@ export default class taskController {
         //#swagger.tags=['Task']
         const taskId = req.params.taskid;
         //console.log(taskId)
-        
+
         try {
             const task = await TaskSchema.findById({ _id: taskId });
             if (!task) {
                 res.status(404).json({ message: 'Task not found' });
                 return;
             }
-            console.log('this is the taskj' +task)
-            const Status :string = req.body.status;
+            console.log('this is the taskj' + task)
+            const Status: string = req.body.status;
             // Update the task properties
             task.owner = req.params._id;
             task.title = req.body.title;
@@ -120,7 +125,7 @@ export default class taskController {
             //console.error(message); // Log the error for debugging
             res.status(500).json({ message: 'Internal Server Error' });
         }
-        
+
     }
 
 }
