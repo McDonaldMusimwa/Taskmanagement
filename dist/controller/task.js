@@ -39,16 +39,17 @@ class taskController {
     }
     getAllTasks(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            //#swagger.tags=['Task']
             try {
+                const userid = req.params.userid; // Correctly access the userid from req.params
                 // Ensure req.user and req.user._id are defined
-                if (!req.params || !req.user._id) {
+                if (!userid) {
                     res.status(401).json({ message: 'User not authenticated' });
                     return;
                 }
-                const userId = req.params;
-                console.log(userId);
-                const tasks = yield task_1.TaskSchema.find({ owner: userId });
+                const userId = req.params.userid;
+                console.log(userid);
+                const tasks = yield task_1.TaskSchema.findAll({ owner: userId });
+                console.log(tasks);
                 if (!tasks || tasks.length === 0) {
                     res.status(404).json({ message: 'No tasks found' });
                 }

@@ -10,16 +10,12 @@ const userSchema = new Schema({
     lowercase:true,
     unique:true
   },
-  password: {
-    type: String,
-    required: [true,'Please enter password'],
-    minLength:[6,'Minimum length is 6 characters']
-  },
+
   firstname: {
     type: String,
     required: true,
   },
-  lastname: {
+  picture: {
     type: String,
     required: false, // It's better to use `required` instead of `require`
   },

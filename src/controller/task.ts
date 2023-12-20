@@ -31,18 +31,18 @@ export default class taskController {
         }
     }
     public async getAllTasks(req: Request, res: Response): Promise<void> {
-        //#swagger.tags=['Task']
-
         try {
+            const userid = req.params.userid; // Correctly access the userid from req.params
             // Ensure req.user and req.user._id are defined
-            if (!req.params || !req.user._id) {
+            if (!userid) {
                 res.status(401).json({ message: 'User not authenticated' });
                 return;
             }
 
-            const userId = req.params.id;
-            console.log(userId)
-            const tasks = await TaskSchema.find({ owner: userId });
+            const userId = req.params.userid;
+            console.log(userid);
+            const tasks = await TaskSchema.find({ owener: userId });
+            console.log(tasks);
 
             if (!tasks || tasks.length === 0) {
                 res.status(404).json({ message: 'No tasks found' });

@@ -9,7 +9,6 @@ const taskSchema = new Scheema({
   dateToDo: String,
   starttime: String,
   endtime: String,
-
   status: Number,
 });
 
