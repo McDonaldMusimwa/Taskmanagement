@@ -19,31 +19,28 @@ const JWTTOKEN = process.env.JWTTOKEN;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 class UserController {
-    createUser(req, res) {
+    createUser(name, email, picture) {
         return __awaiter(this, void 0, void 0, function* () {
-            //#swagger.tags=['User']
             try {
-                // Extract user information from the request body
-                const hashedPassword = yield bcrypt_1.default.hash(req.body.password, 10);
-                const newUser = {
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    email: req.body.email,
-                    password: hashedPassword
-                };
-                // Validate the input (you can use a library like Joi for this)
-                if (!newUser.lastname || !newUser.firstname || !newUser.password || !newUser.email) {
-                    res.status(400).json({ error: 'Missing required fields' });
-                    return;
+                // Check if a user with the same email already exists
+                const existingUser = yield user_1.User.findOne({ email });
+                if (existingUser) {
+                    // If a user with the same email exists, you may want to handle this situation
+                    return existingUser;
                 }
-                const Userresult = new user_1.User(newUser); // Create a new user with the 'NewUser' model
-                const createdUser = yield Userresult.save(); // Save the user to the database
-                res.status(200).json({ success: "created successfully" });
-                return Object.assign(Object.assign({}, createdUser._doc), { _id: createdUser.toString() });
+                // If no user with the same email exists, proceed to create a new user
+                const newUser = {
+                    firstname: name,
+                    email: email,
+                    picture: picture
+                };
+                const Userresult = new user_1.User(newUser);
+                const createdUser = yield Userresult.save();
+                return createdUser;
             }
             catch (error) {
                 console.error(error);
-                res.status(500).json({ error: 'Internal Server Error' });
+                throw error;
             }
         });
     }
